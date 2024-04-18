@@ -1,3 +1,3 @@
-# LlamaIndex Documentation Helper
+# Symspellpy Documentation Helper
 
-LlamaIndex documentation helper is a tool to help developer to ask anything about llamaIndex documentation
+Symspellpy documentation helper is a tool to help developer to ask anything about symspellpy documentation
