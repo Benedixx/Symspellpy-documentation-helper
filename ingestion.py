@@ -12,7 +12,7 @@ from llama_index.core import (
     Settings,
     load_index_from_storage,
 )
-from llama_index.readers.file import PDFReader
+from llama_index.readers.file import HTMLTagReader
 from llama_index.vector_stores.pinecone import PineconeVectorStore
 from pinecone import Pinecone
 
@@ -31,7 +31,6 @@ Settings.embed_model = AzureOpenAIEmbedding(
 )
 
 Settings.llm = AzureOpenAI(
-    engine="davinci",
     model="text-davinci-003",
     deployment_name="corpu-text-davinci-003",
     temperature=0.4,
@@ -43,16 +42,18 @@ Settings.llm = AzureOpenAI(
 if __name__ == "__main__":
     print("Ingesting data...")
     dir_reader = SimpleDirectoryReader(
-        input_dir="llamaindex-docs-tmp", file_extractor={".pdf": PDFReader()}
+        input_dir="symspellpy-docs", file_extractor={".html": HTMLTagReader()}
     )
     documents = dir_reader.load_data()
     print(f"Loaded {len(documents)} documents")
 
-    node_parser = SimpleNodeParser.from_defaults(chunk_size=500, chunk_overlap=50)
+    node_parser = SimpleNodeParser.from_defaults(chunk_size=300, chunk_overlap=50)
 
     vector_store = PineconeVectorStore(pinecone_index=pc_index)
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
     index = VectorStoreIndex.from_documents(
-        documents=documents, show_progress=True, storage_context=storage_context,
+        documents=documents,
+        show_progress=True,
+        storage_context=storage_context,
     )
