@@ -4,11 +4,10 @@ import os
 import urllib
 
 # The URL to scrape
-ur0 = "https://gpt-index.readthedocs.io/en/stable/"
-url = "https://docs.llamaindex.ai/en/stable/"
+url = "https://symspellpy.readthedocs.io/en/latest/examples/index.html"
 
 # The directory to store files in
-output_dir = "./llamaindex-docs/"
+output_dir = "./symspellpy-docs/"
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_dir, exist_ok=True)
@@ -25,7 +24,7 @@ for link in links:
     href = link["href"]
     if href.endswith("/"):
         href = href[:-1]
-    href = href + ".html"
+        href = href + ".html"
 
     # If it's a .html file
     if href.endswith(".html"):
@@ -35,9 +34,17 @@ for link in links:
 
         # Fetch the .html file
         print(f"downloading {href}")
-        file_response = requests.get(href)
+
+        # Check if the page has a <section> tag
+        page_response = requests.get(href)
+        page_soup = BeautifulSoup(page_response.text, "html.parser")
+        section_tag = page_soup.find("section")
+
+        if section_tag is None:
+            print("Skipping download: No <section> tag found.")
+            continue
 
         # Write it to a file
         file_name = os.path.join(output_dir, os.path.basename(href))
         with open(file_name, "wb") as file:  # Use binary mode instead of text mode
-            file.write(file_response.content)
+            file.write(page_response.content)
