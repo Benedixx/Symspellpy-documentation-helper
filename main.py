@@ -36,3 +36,6 @@ if __name__ == "__main__":
     response = query_engine.query(query)
 
     print(response)
+    for i in response.metadata.items():
+        file_name = i[1]['file_name']
+        print("reference used : ", file_name)
