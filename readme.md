@@ -19,6 +19,10 @@ To use Symspellpy Documentation Helper, you need to clone the repository:
 ```
 git clone https://github.com/Benedixx/Symspellpy-documentation-helper.git
 ```
+and install all library that needed by:
+```
+pip install -r requirements.txt
+```
 ##  Usage
 
 1. Download Symspellpy documentation :
